@@ -1,0 +1,39 @@
+import pygame
+pygame.init()
+
+windowsize = [400,300]
+screen = pygame.display.set_mode(windowsize)
+clock = pygame.time.Clock()
+
+#记录鼠标点击每个位置的列表
+points = []
+
+#创建颜色并开始游戏循环
+black = pygame.color.Color('#000000')
+white = pygame.color.Color('#ffffff')
+
+done = False
+while not done:
+    screen.fill(black)
+
+    #检查是否有十个点，有移除第一个，画出所有点
+    if len(points) >10:
+        del points[0]
+    if len(points) > 1:
+        pygame.draw.lines(screen, white, True, points)
+
+     #点与窗口底部用直线连起来
+    for point in points:
+        pygame.draw.line(screen, white, point, [point[0], windowsize[1]])#[windowsize[0], point[1]]
+
+    #检查鼠标点击，窗口可以关闭
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pos = pygame.mouse.get_pos()
+            points.append(pos)
+        if event.type == pygame.QUIT:
+            done = True
+        pygame.display.flip()
+        clock.tick(10)
+pygame.quit()
+    
